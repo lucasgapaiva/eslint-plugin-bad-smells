@@ -28,5 +28,9 @@
   "peerDependencies": {
     "eslint": ">=6"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lucas-paiva98/eslint-plugin-bad-smells.git"
+  },
   "license": "ISC"
 }
