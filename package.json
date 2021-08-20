@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-bad-smells",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "This plugin looks for bad smells in JavaScript",
   "keywords": [
     "eslint",
