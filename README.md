@@ -53,17 +53,17 @@ Then configure the rules you want to use under the rules section.
 
 # Refactoring
 
-### Long method
+## Long method
 
 - **Extract method**: Move code to a separate new method (or function) and replace the old code with a call to the method.
 
   **Steps:**
 
-  1. First, create a new method and make sure to name it that the purpose of this method obvious
+  1.  First, create a new method and make sure to name it that the purpose of this method obvious
 
-  2. Than you are able move the code from the main method to the function created
+  2.  Than you are able move the code from the main method to the function created
 
-  3. The last step is to update the main method with the new methods created
+  3.  The last step is to update the main method with the new methods created
 
   ```js
   //Before
@@ -89,37 +89,61 @@ Then configure the rules you want to use under the rules section.
   }
   ```
 
+  **Benefits**
+
+  - More readable code! Be sure to give the new method a name that describes the method’s purpose: `printDetails()`, `calculateTotalPrice()`, etc.
+
+  - Less code duplication. Often the code that is found in a method can be reused in other places in your program. So you can replace duplicates with calls to your new method.
+
+  - Isolates independent parts of code, meaning that errors are less likely (such as if the wrong variable is modified).
+
+---
+
+<br>
+
 - **Replace Temp with Query**: Move a part of the code to a new separate method and return the result from it.
 
   **Steps:**
 
-  1. First, use Extract Method to calculate the value you need in the main method. Make sure that the method only returns a value and does not change the state of the object.
+  1.  First, use Extract Method to calculate the value you need in the main method. Make sure that the method only returns a value and does not change the state of the object.
 
-  2. Replace the variable in the main method.
+  2.  Replace the variable in the main method.
 
-```js
-//Before
-function calculateTotal() {
-  let basePrice = quantity * itemPrice;
+  ```js
+  //Before
+  function calculateTotal() {
+    let basePrice = quantity * itemPrice;
 
-  if (basePrice > 1000) return basePrice * 0.95;
-  else return basePrice * 0.98;
-}
-```
+    if (basePrice > 1000) return basePrice * 0.95;
+    else return basePrice * 0.98;
+  }
+  ```
 
-```js
-//After
-function basePrice() {
-  return quantity * itemPrice;
-}
+  ```js
+  //After
+  function basePrice() {
+    return quantity * itemPrice;
+  }
 
-function calculateTotal() {
-  if (basePrice() > 1000) return basePrice() * 0.95;
-  else return basePrice() * 0.98;
-}
-```
+  function calculateTotal() {
+    if (basePrice() > 1000) return basePrice() * 0.95;
+    else return basePrice() * 0.98;
+  }
+  ```
 
-### Long Parameter List
+  **Benefits**
+
+  - Code readability. It is much easier to understand the purpose of the method `getTax()` than the line `orderPrice() * 0.2`.
+
+  - Slimmer code via deduplication, if the line being replaced is used in multiple methods.
+
+<br>
+
+---
+
+<br>
+
+## Long Parameter List
 
 - **Extract method**: Move code to a separate new method (or function) and replace the old code with a call to the method.
 
@@ -131,37 +155,41 @@ function calculateTotal() {
 
   3. The last step is to update the main method with the new methods created
 
-```js
-//Before
-function printUserData(name, email, number, salary, zipCode, address) {
-  console.log("name: ", name);
-  console.log("email: ", email);
-  console.log("number: ", number);
-  console.log("salary: ", salary);
-  console.log("zipCode: ", zipCode);
-  console.log("address: ", address);
-}
-```
+  ```js
+  //Before
+  function printUserData(name, email, number, salary, zipCode, address) {
+    console.log("name: ", name);
+    console.log("email: ", email);
+    console.log("number: ", number);
+    console.log("salary: ", salary);
+    console.log("zipCode: ", zipCode);
+    console.log("address: ", address);
+  }
+  ```
 
-```js
-//After
-function printAddress(zipCode, address) {
-  console.log("zipCode: ", zipCode);
-  console.log("address: ", address);
-}
+  ```js
+  //After
+  function printAddress(zipCode, address) {
+    console.log("zipCode: ", zipCode);
+    console.log("address: ", address);
+  }
 
-function printPersonalData(name, email, number, salary) {
-  console.log("name: ", name);
-  console.log("email: ", email);
-  console.log("number: ", number);
-  console.log("salary: ", salary);
-}
+  function printPersonalData(name, email, number, salary) {
+    console.log("name: ", name);
+    console.log("email: ", email);
+    console.log("number: ", number);
+    console.log("salary: ", salary);
+  }
 
-function printUserData() {
-  printAddress(zipCode, address);
-  printPersonalData(name, email, number, salary);
-}
-```
+  function printUserData() {
+    printAddress(zipCode, address);
+    printPersonalData(name, email, number, salary);
+  }
+  ```
+
+---
+
+<br>
 
 - **Preserve Whole Object**: Instead of passing the values of the object as parameters, you could pass the whole object as a parameter.
 
@@ -171,31 +199,45 @@ function printUserData() {
 
   2. Now you are able to remove the old parameters from the method and use the object reference.
 
-```js
-//Before
-const { name, email, number, salary, zipCode, address } = userData;
+  ```js
+  //Before
+  const { name, email, number, salary, zipCode, address } = userData;
 
-function printUserData({ name, email, number, salary, zipCode, address }) {
-  console.log("name: ", name);
-  console.log("email: ", email);
-  console.log("number: ", number);
-  console.log("salary: ", salary);
-  console.log("zipCode: ", zipCode);
-  console.log("address: ", address);
-}
-```
+  function printUserData({ name, email, number, salary, zipCode, address }) {
+    console.log("name: ", name);
+    console.log("email: ", email);
+    console.log("number: ", number);
+    console.log("salary: ", salary);
+    console.log("zipCode: ", zipCode);
+    console.log("address: ", address);
+  }
+  ```
 
-```js
-//After
-function printUserData(userData) {
-  console.log("name: ", userData.name);
-  console.log("email: ", userData.email);
-  console.log("number: ", userData.number);
-  console.log("salary: ", userData.salary);
-  console.log("zipCode: ", userData.zipCode);
-  console.log("address: ", userData.address);
-}
-```
+  ```js
+  //After
+  function printUserData(userData) {
+    console.log("name: ", userData.name);
+    console.log("email: ", userData.email);
+    console.log("number: ", userData.number);
+    console.log("salary: ", userData.salary);
+    console.log("zipCode: ", userData.zipCode);
+    console.log("address: ", userData.address);
+  }
+  ```
+
+  **Benefits**
+
+  - Instead of a hodgepodge of parameters, you see a single object with a comprehensible name.
+
+  - If the method needs more data from an object, you will not need to rewrite all the places where the method is used – merely inside the method itself.
+
+  **Drawbacks**
+
+  - Sometimes this transformation causes a method to become less flexible: previously the method could get data from many different sources but now, because of refactoring, we are limiting its use to only objects with a particular interface
+
+---
+
+<br>
 
 - **Replace Parameter with Method Call**: Instead of passing the values of the object as parameters, you could pass the whole object as a parameter.
 
@@ -209,45 +251,65 @@ function printUserData(userData) {
 
   4. After adding the news calls to the method to replace the parameters, you are able to eliminate the parameters from the main method.
 
-```js
-//Before
-const discount = getDiscount();
-const fees = getFees();
-const shipping = getShipping();
-const hasCupom = getCupom();
-
-function printFinalPrice(
-  quantity,
-  itemPrice,
-  discount,
-  fees,
-  shipping,
-  hasCupom
-) {
-  // Caculate the final price
-
-  console.log("finalPrice", finalPrice);
-}
-```
-
-```js
-//After
-function printFinalPrice(quantity, itemPrice) {
-  // Get the values
+  ```js
+  //Before
   const discount = getDiscount();
   const fees = getFees();
   const shipping = getShipping();
   const hasCupom = getCupom();
 
-  // Caculate the final price
+  function printFinalPrice(
+    quantity,
+    itemPrice,
+    discount,
+    fees,
+    shipping,
+    hasCupom
+  ) {
+    // Caculate the final price
 
-  console.log("finalPrice", finalPrice);
-}
-```
+    console.log("finalPrice", finalPrice);
+  }
+  ```
 
-### Long Message Chain
+  ```js
+  //After
+  function printFinalPrice(quantity, itemPrice) {
+    // Get the values
+    const discount = getDiscount();
+    const fees = getFees();
+    const shipping = getShipping();
+    const hasCupom = getCupom();
+
+    // Caculate the final price
+
+    console.log("finalPrice", finalPrice);
+  }
+  ```
+
+  **Benefits**
+
+  - We get rid of unneeded parameters and simplify method calls. Such parameters are often created not for the project as it is now, but with an eye for future needs that may never come.
+
+  **Drawbacks**
+
+  - You may need the parameter tomorrow for other needs... making you rewrite the method.
+
+<br>
+
+---
+
+<br>
+
+## Long Message Chain
 
 Introduce variable to replace the calls or break the chain into general methods/properties for the object
+
+**Steps**
+
+1. Create a new method and name it in a way that makes its purpose self-evident.
+
+2. Copy the relevant code fragment to your new method. Delete the fragment from its old location and put a call for the new method there instead.
 
 ```js
 //Before
@@ -272,59 +334,104 @@ const concatArr = evenArr.concat(arr2);
 const hasNumberTen = evenArr.find((e) => e === 10);
 ```
 
-### Nested Callback
-
-Extract Method or introduce method variable to replace the call
-
-```js
-//Before
-setTimeout(function () {
-  xhr("/greeting/", function (greeting) {
-    xhr("/who/?greeting=" + greeting, function (who) ←֓
-      {
-        document.write(greeting + " " + who)
-      })
-  })
-}, 1000)
-```
-
 ```js
 //After
-setTimeout(foo, 1000);
-
-function foo() {
-  xhr("/greeting/", bar);
+function addTreeToEachValue(arr) {
+  return arr.map((e) => e + 3);
 }
 
-function bar(greeting) {
-  xhr("/who/?greeting=" + greeting, baz);
+function filterEvenNumbers(arr) {
+  return arr.filter((e) => e % 2 === 0);
 }
 
-function baz(who) {
-  document.write(greeting + " " + who);
+function arrHasNumberTen(arr) {
+  return arr.find((e) => e === 10);
 }
+
+const arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const arr2 = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+const arrPlusThree = addTreeToEachValue(arr1);
+const evenArr = filterEvenNumbers(arrPlusThree);
+const concatArr = evenArr.concat(arr2);
+const hasNumberTen = arrHasNumberTen(concatArr);
 ```
 
-### Empty catch
+<br>
 
-Include message errors
+---
 
-```js
-//Before
-try {
-  await asyncCall();
-} catch (error) {}
-```
+<br>
 
-```js
-//After
+## Nested Callback
 
-try {
-  await asyncCall();
-} catch (error) {
-  console.error(error);
-}
-```
+- **Extract method**: Move code to a separate new method (or function) and replace the old code with a call to the method.
+
+  **Steps:**
+
+  1. First, you need to identify the methods you want to remove
+
+  2. Than you are able to move the methods outside the nested calls
+
+  3. The last step is to update the main method with the new methods created
+
+  ```js
+  //Before
+  setTimeout(function () {
+    xhr("/greeting/", function (greeting) {
+      xhr("/who/?greeting=" + greeting, function (who) ←֓
+        {
+          document.write(greeting + " " + who)
+        })
+    })
+  }, 1000)
+  ```
+
+  ```js
+  //After
+  setTimeout(foo, 1000);
+
+  function foo() {
+    xhr("/greeting/", bar);
+  }
+
+  function bar(greeting) {
+    xhr("/who/?greeting=" + greeting, baz);
+  }
+
+  function baz(who) {
+    document.write(greeting + " " + who);
+  }
+  ```
+
+<br>
+
+---
+
+<br>
+
+## Empty catch
+
+- Include message errors
+
+  ```js
+  //Before
+  try {
+    await asyncCall();
+  } catch (error) {}
+  ```
+
+  ```js
+  //After
+
+  try {
+    await asyncCall();
+  } catch (error) {
+    console.error(error);
+  }
+  ```
+
+<br>
 
 # References
 
